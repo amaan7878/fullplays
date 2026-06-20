@@ -821,7 +821,7 @@ function Index() {
             {/* Perks */}
             <div className="flex flex-wrap gap-x-6 gap-y-2 flex-1">
               {[
-                { icon: Users,          label: "Per referral",    value: "₹500 bonus"  },
+                { icon: Users,          label: "Per referral",    value: "upto ₹100 bonus"  },
                 { icon: Zap,            label: "Instant credit",  value: "No delay"    },
                 { icon: Star,           label: "No cap",          value: "Unlimited"   },
               ].map(({ icon: I, label, value }) => (
