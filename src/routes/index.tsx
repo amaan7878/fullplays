@@ -205,14 +205,14 @@ function Index() {
 
         {/* ── Nav ── */}
         <header className="flex items-center justify-between gap-2 sm:gap-4">
-          <div className="flex items-center gap-0">
+          <div className="flex items-center gap-1">
             <img
               src={fullplayMark}
               alt="Fullplay"
-              className="h-11 w-11 sm:h-14 sm:w-14 object-contain shrink-0 -mr-1 drop-shadow-[0_0_14px_rgba(168,85,247,0.5)]"
+              className="h-14 w-14 object-contain shrink-0 drop-shadow-[0_0_8px_rgba(168,85,247,0.22)]"
             />
             <div className="leading-none">
-              <div className="text-lg sm:text-2xl font-extrabold tracking-tight">
+              <div className="text-xl sm:text-2xl font-extrabold tracking-tight -ml-0.5 sm:-ml-1">
                 Full<span className="text-gradient-hero">play</span>
               </div>
               <div className="text-[8px] sm:text-[9px] tracking-[0.25em] text-muted-foreground mt-1">PLAY. WIN. REPEAT.</div>

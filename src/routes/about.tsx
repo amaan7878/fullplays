@@ -59,6 +59,9 @@ function AboutPage() {
       intro="Built on speed, fairness, and player respect. We're rewriting what an online casino can feel like."
       updated="May 24, 2026"
       sections={sections}
+      logoSizeClassName="h-14 w-14"
+      logoGapClassName="gap-0"
+      logoTextClassName="text-xl sm:text-2xl -ml-0.5 sm:-ml-1"
     />
   );
 }

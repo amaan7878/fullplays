@@ -94,6 +94,9 @@ function ResponsiblePage() {
       intro="Your wellbeing comes before any wager. Here are the tools, limits, and helplines built into FullPlay to keep you in control."
       updated="May 24, 2026"
       sections={sections}
+      logoSizeClassName="h-14 w-14"
+      logoGapClassName="gap-0"
+      logoTextClassName="text-xl sm:text-2xl -ml-0.5 sm:-ml-1"
     />
   );
 }

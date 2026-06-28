@@ -1053,9 +1053,9 @@ function CommunityPage() {
       {/* ── Header ── */}
       <header className="border-b border-border bg-surface/80 backdrop-blur sticky top-0 z-30">
         <div className="max-w-[1180px] mx-auto px-4 sm:px-6 h-14 flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img src={fullplayMark} alt="Fullplay" className="h-9 w-9 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.45)]" />
-            <div className="text-xl font-extrabold leading-none tracking-tight hidden sm:block">Full<span className="text-gradient-hero">play</span></div>
+          <Link to="/" className="flex items-center gap-1 shrink-0">
+            <img src={fullplayMark} alt="Fullplay" className="h-14 w-14 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.22)]" />
+            <div className="text-xl sm:text-2xl font-extrabold leading-none tracking-tight hidden sm:block -ml-0.5 sm:-ml-1">Full<span className="text-gradient-hero">play</span></div>
           </Link>
           <div className="relative flex-1 max-w-xs mx-auto sm:mx-4 hidden sm:flex">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />

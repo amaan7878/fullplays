@@ -37,17 +37,15 @@ function BlogPage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-surface/60 backdrop-blur sticky top-0 z-30">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
-          <Link to="/" className="flex items-center gap-2.5">
+          <Link to="/" className="flex items-center gap-1">
             <img
               src={fullplayMark}
               alt="FullPlay"
-              width={36}
-              height={36}
-              style={{ mixBlendMode: "lighten" }}
+              className="h-14 w-14 object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.22)]"
               draggable={false}
             />
             <div className="leading-none">
-              <div className="text-base font-extrabold tracking-tight">
+              <div className="text-xl sm:text-2xl font-extrabold tracking-tight -ml-0.5 sm:-ml-1">
                 FULL<span className="text-gradient-hero">PLAY</span>
               </div>
               <div className="text-[9px] tracking-[0.25em] text-muted-foreground mt-0.5">PLAY. WIN. REPEAT.</div>

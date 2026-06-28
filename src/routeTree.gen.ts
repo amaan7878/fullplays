@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ResponsibleGamingRouteImport } from './routes/responsible-gaming'
+import { Route as PromotionsRouteImport } from './routes/promotions'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -30,6 +31,11 @@ const TermsRoute = TermsRouteImport.update({
 const ResponsibleGamingRoute = ResponsibleGamingRouteImport.update({
   id: '/responsible-gaming',
   path: '/responsible-gaming',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromotionsRoute = PromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/help': typeof HelpRoute
   '/privacy': typeof PrivacyRoute
+  '/promotions': typeof PromotionsRoute
   '/responsible-gaming': typeof ResponsibleGamingRoute
   '/terms': typeof TermsRoute
 }
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/help': typeof HelpRoute
   '/privacy': typeof PrivacyRoute
+  '/promotions': typeof PromotionsRoute
   '/responsible-gaming': typeof ResponsibleGamingRoute
   '/terms': typeof TermsRoute
 }
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/help': typeof HelpRoute
   '/privacy': typeof PrivacyRoute
+  '/promotions': typeof PromotionsRoute
   '/responsible-gaming': typeof ResponsibleGamingRoute
   '/terms': typeof TermsRoute
 }
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/help'
     | '/privacy'
+    | '/promotions'
     | '/responsible-gaming'
     | '/terms'
   fileRoutesByTo: FileRoutesByTo
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/help'
     | '/privacy'
+    | '/promotions'
     | '/responsible-gaming'
     | '/terms'
   id:
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/help'
     | '/privacy'
+    | '/promotions'
     | '/responsible-gaming'
     | '/terms'
   fileRoutesById: FileRoutesById
@@ -182,6 +194,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   HelpRoute: typeof HelpRoute
   PrivacyRoute: typeof PrivacyRoute
+  PromotionsRoute: typeof PromotionsRoute
   ResponsibleGamingRoute: typeof ResponsibleGamingRoute
   TermsRoute: typeof TermsRoute
 }
@@ -200,6 +213,13 @@ declare module '@tanstack/react-router' {
       path: '/responsible-gaming'
       fullPath: '/responsible-gaming'
       preLoaderRoute: typeof ResponsibleGamingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/promotions': {
+      id: '/promotions'
+      path: '/promotions'
+      fullPath: '/promotions'
+      preLoaderRoute: typeof PromotionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -286,6 +306,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   HelpRoute: HelpRoute,
   PrivacyRoute: PrivacyRoute,
+  PromotionsRoute: PromotionsRoute,
   ResponsibleGamingRoute: ResponsibleGamingRoute,
   TermsRoute: TermsRoute,
 }

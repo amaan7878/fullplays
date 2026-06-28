@@ -11,21 +11,31 @@ export function LegalLayout({
   intro,
   updated,
   sections,
+  logoSizeClassName,
+  logoGapClassName,
+  logoTextClassName,
 }: {
   eyebrow: string;
   title: string;
   intro: string;
   updated: string;
   sections: Section[];
+  logoSizeClassName?: string;
+  logoGapClassName?: string;
+  logoTextClassName?: string;
 }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Top bar */}
       <header className="border-b border-border bg-surface/60 backdrop-blur sticky top-0 z-30">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-3">
-          <Link to="/" className="flex items-center gap-2">
-            <img src={fullplayMark} alt="Fullplay" className="h-10 w-10 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.45)]" />
-            <div className="text-xl font-extrabold leading-none tracking-tight">
+          <Link to="/" className={`flex items-center ${logoGapClassName ?? "gap-0"}`}>
+            <img
+              src={fullplayMark}
+              alt="Fullplay"
+              className={`${logoSizeClassName ?? "h-14 w-14"} object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.22)]`}
+            />
+            <div className={`font-extrabold leading-none tracking-tight ${logoTextClassName ?? "text-xl sm:text-2xl -ml-0.5 sm:-ml-1"}`}>
               Full<span className="text-gradient-hero">play</span>
             </div>
           </Link>

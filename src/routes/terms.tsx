@@ -165,6 +165,9 @@ function TermsPage() {
       intro="These terms govern your use of FullPlay. By creating an account or placing a wager, you agree to everything below. Please read carefully — they protect both you and the platform."
       updated="May 24, 2026"
       sections={sections}
+      logoSizeClassName="h-14 w-14"
+      logoGapClassName="gap-0"
+      logoTextClassName="text-xl sm:text-2xl -ml-0.5 sm:-ml-1"
     />
   );
 }

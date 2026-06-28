@@ -1,14 +1,14 @@
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState, useEffect, type FormEvent } from "react";
-import { Play, ArrowLeft, Eye, EyeOff, Check, X, Mail, KeyRound } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Check, X, Mail, KeyRound } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import fullplayMark from "@/assets/fullplay-mark.png";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [{ title: "FullPlay — Login or Register" }],
   }),
   validateSearch: (search: Record<string, unknown>) => ({
-    // Supabase appends ?type=recovery&access_token=... after password-reset email click
     type: (search.type as string) ?? "",
     access_token: (search.access_token as string) ?? "",
   }),
@@ -112,12 +112,11 @@ function LegalCheckbox({
 
 // ─── Inline view panels ────────────────────────────────────────────────────────
 
-/** Forgot password — user enters email, gets reset link */
 function ForgotView({ onBack }: { onBack: () => void }) {
-  const [email, setEmail]   = useState("");
+  const [email, setEmail]     = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError]   = useState<string | null>(null);
-  const [sent, setSent]     = useState(false);
+  const [error, setError]     = useState<string | null>(null);
+  const [sent, setSent]       = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -190,13 +189,12 @@ function ForgotView({ onBack }: { onBack: () => void }) {
   );
 }
 
-/** Reset password — user came from the email link, sets a new password */
 function ResetView({ onDone }: { onDone: () => void }) {
-  const [password, setPassword]   = useState("");
-  const [confirm, setConfirm]     = useState("");
-  const [loading, setLoading]     = useState(false);
-  const [error, setError]         = useState<string | null>(null);
-  const [success, setSuccess]     = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm]   = useState("");
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState<string | null>(null);
+  const [success, setSuccess]   = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -270,12 +268,10 @@ function AuthPage() {
   const navigate = useNavigate();
   const search   = useSearch({ from: "/auth" });
 
-  // Detect Supabase recovery redirect (?type=recovery)
   const [mode, setMode] = useState<Mode>(() =>
     search.type === "recovery" ? "reset" : "login"
   );
 
-  // If Supabase sends the access_token in the URL hash (older flow), set the session
   useEffect(() => {
     if (search.type === "recovery" && search.access_token) {
       supabase.auth.setSession({
@@ -285,15 +281,13 @@ function AuthPage() {
     }
   }, [search.type, search.access_token]);
 
-  // Fields (login / register)
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm]   = useState("");
 
-  // Legal checkboxes
-  const [ageConfirmed, setAgeConfirmed]               = useState(false);
-  const [termsAccepted, setTermsAccepted]             = useState(false);
-  const [responsibleGaming, setResponsibleGaming]     = useState(false);
+  const [ageConfirmed, setAgeConfirmed]           = useState(false);
+  const [termsAccepted, setTermsAccepted]         = useState(false);
+  const [responsibleGaming, setResponsibleGaming] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState<string | null>(null);
@@ -309,11 +303,11 @@ function AuthPage() {
 
   const validate = (): string | null => {
     if (mode === "register") {
-      if (!isPasswordValid(password))   return "Password does not meet the requirements.";
-      if (password !== confirm)          return "Passwords do not match.";
-      if (!ageConfirmed)                 return "You must confirm you are 18 or older.";
-      if (!termsAccepted)                return "You must accept the Terms & Conditions.";
-      if (!responsibleGaming)            return "You must acknowledge the Responsible Gaming policy.";
+      if (!isPasswordValid(password)) return "Password does not meet the requirements.";
+      if (password !== confirm)        return "Passwords do not match.";
+      if (!ageConfirmed)               return "You must confirm you are 18 or older.";
+      if (!termsAccepted)              return "You must accept the Terms & Conditions.";
+      if (!responsibleGaming)          return "You must acknowledge the Responsible Gaming policy.";
     }
     return null;
   };
@@ -335,8 +329,9 @@ function AuthPage() {
           options: { emailRedirectTo: window.location.origin },
         });
         if (error) throw error;
-        setInfo("Check your email to confirm your account, then log in.");
+        // switchMode resets the form (including info), so set info after
         switchMode("login");
+        setInfo("Check your email to confirm your account, then log in.");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -351,7 +346,6 @@ function AuthPage() {
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
 
-        {/* Only show back-to-home on main login/register views */}
         {(mode === "login" || mode === "register") && (
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
             <ArrowLeft className="w-4 h-4" /> Back to home
@@ -360,30 +354,25 @@ function AuthPage() {
 
         <div className="rounded-2xl bg-surface border border-border p-6 sm:p-8 shadow-glow">
 
-          {/* Logo — always visible */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-11 h-11 rounded-xl bg-gradient-primary grid place-items-center shadow-glow">
-              <Play className="w-5 h-5 text-white fill-white" />
-            </div>
+          {/* Logo */}
+          <div className="flex items-center gap-1 mb-6">
+            <img src={fullplayMark} alt="FullPlay" className="h-14 w-14 rounded-xl object-contain" />
             <div className="leading-none">
-              <div className="text-lg font-extrabold tracking-tight">
+              <div className="text-xl sm:text-2xl font-extrabold tracking-tight -ml-0.5 sm:-ml-1">
                 FULL<span className="text-gradient-hero">PLAY</span>
               </div>
               <div className="text-[9px] tracking-[0.25em] text-muted-foreground mt-1">PLAY. WIN. REPEAT.</div>
             </div>
           </div>
 
-          {/* ── Forgot password view ── */}
           {mode === "forgot" && (
             <ForgotView onBack={() => switchMode("login")} />
           )}
 
-          {/* ── Reset password view (from email link) ── */}
           {mode === "reset" && (
             <ResetView onDone={() => switchMode("login")} />
           )}
 
-          {/* ── Login / Register view ── */}
           {(mode === "login" || mode === "register") && (
             <>
               {/* Tab toggle */}
@@ -423,7 +412,6 @@ function AuthPage() {
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label htmlFor="password" className="block text-xs font-semibold tracking-wide text-muted-foreground">PASSWORD</label>
-                    {/* Forgot password link — only on login */}
                     {mode === "login" && (
                       <button
                         type="button"

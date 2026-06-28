@@ -81,6 +81,9 @@ function FaqPage() {
       intro="Quick answers to the questions players ask most. Tap any question to expand."
       updated="May 24, 2026"
       sections={sections}
+      logoSizeClassName="h-14 w-14"
+      logoGapClassName="gap-0"
+      logoTextClassName="text-xl sm:text-2xl -ml-0.5 sm:-ml-1"
     />
   );
 }
