@@ -197,13 +197,13 @@ function Promotions() {
             ) : (
               <>
                 <a
-                  href="/auth"
+                  href="/auth?mode=register"
                   className="h-8 sm:h-11 px-3 sm:px-6 text-xs sm:text-base rounded-full sm:rounded-xl bg-gradient-primary text-primary-foreground font-semibold shadow-glow transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-5px_hsl(var(--primary)/0.5)] grid place-items-center"
                 >
                   Register
                 </a>
                 <a
-                  href="/auth"
+                  href="/auth?mode=login"
                   className="h-8 sm:h-11 px-3 sm:px-6 text-xs sm:text-base rounded-full sm:rounded-xl border border-border bg-surface font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:shadow-lg grid place-items-center"
                 >
                   Login

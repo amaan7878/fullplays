@@ -11,6 +11,7 @@ export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>) => ({
     type: (search.type as string) ?? "",
     access_token: (search.access_token as string) ?? "",
+    mode: (search.mode as string) ?? "",
   }),
   component: AuthPage,
 });
@@ -268,9 +269,11 @@ function AuthPage() {
   const navigate = useNavigate();
   const search   = useSearch({ from: "/auth" });
 
-  const [mode, setMode] = useState<Mode>(() =>
-    search.type === "recovery" ? "reset" : "login"
-  );
+  const [mode, setMode] = useState<Mode>(() => {
+    if (search.type === "recovery") return "reset";
+    if (search.mode === "register") return "register";
+    return "login";
+  });
 
   useEffect(() => {
     if (search.type === "recovery" && search.access_token) {
