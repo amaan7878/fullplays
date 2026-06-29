@@ -44,7 +44,6 @@ const NAV_ITEMS: { label: string; to: "/" | "/community" | "/promotions" }[] = [
 
 const CATEGORIES = [
   { label: "Originals", icon: LayoutGrid, id: "originals" },
-  { label: "PvP", icon: Flame, id: "pvp" },
 ];
 
 const TOP_GAMES = [
@@ -102,14 +101,14 @@ const SLIDES = [
 ];
 
 const TICKER_ITEMS = [
-  "🎰 Dani*** won ₹21,456 on Mines",
-  "💥 Bharat*** hit 22.6× on Crash",
-  "🎯 Rajat*** won ₹16,986 on Plinko",
-  "🐉 Veer*** won ₹12,456 on Dragon & Tiger",
-  "🎡 Pavan*** hit 11.5× on Wheel",
-  "🃏 Zaid*** won ₹6,240 on Hilo",
-  "⚡ Arjun*** hit 31× on Crash",
-  "💎 Sneha*** won ₹44,800 on Mines",
+  "📊 Dani earned ₹21,456 via affiliate program",
+  "🔥 Bharat earned ₹22,600 from community posts",
+  "📊 Rajat earned ₹16,986 via affiliate program",
+  "🔥 Veer earned ₹12,456 from community posts",
+  "📊 Pavan earned ₹11,500 via affiliate program",
+  "🔥 Zaid earned ₹6,240 from community posts",
+  "📊 Arjun earned ₹31,000 via affiliate program",
+  "🔥 Sneha earned ₹44,800 from community posts",
 ];
 
 const ACCOUNT_ACTIONS = [
