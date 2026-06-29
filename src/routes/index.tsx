@@ -35,10 +35,11 @@ const SLIDE_INTERVAL_MS = 6500;
 
 // --- Static data moved outside component to avoid re-creation on every render ---
 
-const NAV_ITEMS: { label: string; to?: "/community" }[] = [
-  { label: "CASINO" },
-  { label: "COMMUNITY", to: "/community" },
-  { label: "PROMOTIONS" },
+// ✅ FIXED: all three nav items now have a `to` prop
+const NAV_ITEMS: { label: string; to: "/" | "/community" | "/promotions" }[] = [
+  { label: "CASINO",      to: "/"           },
+  { label: "COMMUNITY",   to: "/community"  },
+  { label: "PROMOTIONS",  to: "/promotions" },
 ];
 
 const CATEGORIES = [
@@ -205,36 +206,37 @@ function Index() {
 
         {/* ── Nav ── */}
         <header className="flex items-center justify-between gap-2 sm:gap-4">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0">
             <img
               src={fullplayMark}
               alt="Fullplay"
-              className="h-14 w-14 object-contain shrink-0 drop-shadow-[0_0_8px_rgba(168,85,247,0.22)]"
+              className="h-11 w-11 sm:h-14 sm:w-14 object-contain shrink-0 -mr-1 drop-shadow-[0_0_14px_rgba(168,85,247,0.5)]"
             />
             <div className="leading-none">
-              <div className="text-xl sm:text-2xl font-extrabold tracking-tight -ml-0.5 sm:-ml-1">
+              <div className="text-lg sm:text-2xl font-extrabold tracking-tight">
                 Full<span className="text-gradient-hero">play</span>
               </div>
               <div className="text-[8px] sm:text-[9px] tracking-[0.25em] text-muted-foreground mt-1">PLAY. WIN. REPEAT.</div>
             </div>
           </div>
 
+          {/* ✅ FIXED: all items use <Link>, CASINO gets the active underline */}
           <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold tracking-wide">
-            {NAV_ITEMS.map((n, i) => {
-              const cls = `relative py-2 ${i === 0 ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`;
-              const inner = (
-                <>
-                  {n.label}
-                  {n.label === "PROMOTIONS" && (
-                    <span className="ml-2 align-middle text-[9px] bg-gradient-primary text-white px-1.5 py-0.5 rounded">NEW</span>
-                  )}
-                  {i === 0 && <span className="absolute -bottom-0.5 left-0 right-8 h-0.5 bg-gradient-primary rounded-full" />}
-                </>
-              );
-              return n.to
-                ? <Link key={n.label} to={n.to} className={cls}>{inner}</Link>
-                : <a key={n.label} href="#" className={cls}>{inner}</a>;
-            })}
+            {NAV_ITEMS.map((n) => (
+              <Link
+                key={n.label}
+                to={n.to}
+                className={`relative py-2 ${n.label === "CASINO" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                {n.label}
+                {n.label === "PROMOTIONS" && (
+                  <span className="ml-2 align-middle text-[9px] bg-gradient-primary text-white px-1.5 py-0.5 rounded">NEW</span>
+                )}
+                {n.label === "CASINO" && (
+                  <span className="absolute -bottom-0.5 left-0 right-8 h-0.5 bg-gradient-primary rounded-full" />
+                )}
+              </Link>
+            ))}
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
@@ -256,13 +258,13 @@ function Index() {
             ) : (
               <>
                 <a
-                  href="/auth?mode=register"
+                  href="/auth"
                   className="h-8 sm:h-11 px-3 sm:px-6 text-xs sm:text-base rounded-full sm:rounded-xl bg-gradient-primary text-primary-foreground font-semibold shadow-glow transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-5px_hsl(var(--primary)/0.5)] grid place-items-center"
                 >
                   Register
                 </a>
                 <a
-                  href="/auth?mode=login"
+                  href="/auth"
                   className="h-8 sm:h-11 px-3 sm:px-6 text-xs sm:text-base rounded-full sm:rounded-xl border border-border bg-surface font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:shadow-lg grid place-items-center"
                 >
                   Login
@@ -342,17 +344,18 @@ function Index() {
                   ))}
                 </ul>
 
+                {/* ✅ FIXED: mobile drawer nav — all items use <Link> */}
                 <div className="lg:hidden mt-5 px-2 text-[10px] tracking-[0.2em] text-muted-foreground font-semibold mb-2">EXPLORE</div>
                 <ul className="lg:hidden space-y-1">
                   {NAV_ITEMS.map((n) => (
                     <li key={n.label}>
-                      {n.to ? (
-                        <Link to={n.to} onClick={() => setMenuOpen(false)} className="block px-3 py-2.5 rounded-lg hover:bg-surface-2 transition text-sm font-semibold">
-                          {n.label}
-                        </Link>
-                      ) : (
-                        <a href="#" className="block px-3 py-2.5 rounded-lg hover:bg-surface-2 transition text-sm font-semibold">{n.label}</a>
-                      )}
+                      <Link
+                        to={n.to}
+                        onClick={() => setMenuOpen(false)}
+                        className="block px-3 py-2.5 rounded-lg hover:bg-surface-2 transition text-sm font-semibold"
+                      >
+                        {n.label}
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -565,27 +568,18 @@ function Index() {
 
         {/* ── Live Activity Ticker ── */}
         <div className="mt-3 sm:mt-4 rounded-xl border border-border bg-surface overflow-hidden flex items-center gap-0">
-          {/* Live badge */}
           <div className="shrink-0 flex items-center gap-1.5 px-3 sm:px-4 h-9 sm:h-10 border-r border-border bg-surface-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-[10px] sm:text-xs font-bold tracking-widest text-emerald-400 uppercase">Live</span>
           </div>
-          {/* Scrolling text */}
           <div className="flex-1 overflow-hidden relative h-9 sm:h-10 flex items-center">
-            <div
-              className="whitespace-nowrap text-xs sm:text-[13px] text-muted-foreground font-medium animate-[ticker_28s_linear_infinite]"
-              style={{
-                // inline keyframes fallback via style tag below
-              }}
-            >
+            <div className="whitespace-nowrap text-xs sm:text-[13px] text-muted-foreground font-medium animate-[ticker_28s_linear_infinite]">
               {tickerText}&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;{tickerText}
             </div>
           </div>
-          {/* Gradient fade on right */}
           <div className="shrink-0 w-10 sm:w-16 h-9 sm:h-10 bg-gradient-to-l from-surface to-transparent pointer-events-none" />
         </div>
 
-        {/* Ticker keyframe injection */}
         <style>{`
           @keyframes ticker {
             0%   { transform: translateX(0); }
@@ -630,14 +624,12 @@ function Index() {
                     <div className="font-extrabold text-amber-300 text-xs sm:text-sm leading-tight whitespace-pre-line drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                       {g.name}
                     </div>
-                    {/* Plinko multiplier footer */}
                     {g.id === "plinko" && (
                       <div className="mt-1.5 bg-black/60 border border-white/10 rounded-md px-1.5 py-1">
                         <PlinkoFooter />
                       </div>
                     )}
                   </div>
-                  {/* Play overlay on hover */}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                     <div className="w-12 h-12 rounded-full bg-gradient-primary shadow-glow flex items-center justify-center">
                       <Zap className="w-5 h-5 text-white" />
@@ -650,12 +642,8 @@ function Index() {
 
           {/* ── Popularity Top 10 ── */}
           <aside className="rounded-2xl overflow-hidden border border-border flex flex-col" style={{background:"linear-gradient(160deg,#1a1035 0%,#0f0a20 60%,#1a0f2e 100%)"}}>
-
-            {/* Decorative top shimmer */}
             <div className="h-px w-full" style={{background:"linear-gradient(90deg,transparent,rgba(168,85,247,0.6),rgba(251,191,36,0.4),transparent)"}} />
-
             <div className="p-4 sm:p-5 flex flex-col flex-1">
-              {/* Header */}
               <div className="flex items-center justify-between mb-1">
                 <h3 className="flex items-center gap-2 font-bold tracking-wide text-white">
                   <Sparkles className="w-5 h-5 text-amber-400" />
@@ -667,7 +655,6 @@ function Index() {
               </div>
               <p className="text-[11px] text-white/40 mb-5 tracking-wide">Weekly · resets every Monday</p>
 
-              {/* Top 3 podium */}
               <div className="grid grid-cols-3 gap-2.5 mb-5">
                 {TOP_POPULARITY.slice(0, 3).map((p, i) => {
                   const podiumH    = ["h-[128px]", "h-[108px]", "h-[96px]"][i];
@@ -679,7 +666,6 @@ function Index() {
                   ][i];
                   const ptColor = ["text-amber-400", "text-slate-300", "text-orange-400"][i];
 
-                  // Clean SVG rank icons — no emoji
                   const RankIcon = () => {
                     if (i === 0) return (
                       <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -711,23 +697,12 @@ function Index() {
                       key={p.id}
                       className={`group relative flex flex-col items-center justify-end gap-1.5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur px-1.5 pb-3 pt-7 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10 ${podiumH}`}
                     >
-                      {/* Subtle inner glow on hover */}
                       <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background:"radial-gradient(ellipse at 50% 0%,rgba(168,85,247,0.15),transparent 70%)"}} />
-
-                      {/* Rank icon — top center */}
-                      <span className="absolute top-2 left-1/2 -translate-x-1/2">
-                        <RankIcon />
-                      </span>
-
-                      {/* Avatar */}
+                      <span className="absolute top-2 left-1/2 -translate-x-1/2"><RankIcon /></span>
                       <div className={`rounded-full bg-gradient-to-br ${p.gradient} grid place-items-center font-extrabold text-white ${avatarSize} ${glowColor} mt-auto shrink-0`}>
                         {p.initial}
                       </div>
-
-                      {/* Name — allow wrapping so it's never clipped */}
                       <span className="text-[10px] font-bold text-white/90 w-full text-center leading-tight break-all">{p.name}</span>
-
-                      {/* Points */}
                       <div className={`flex items-center gap-0.5 ${ptColor}`}>
                         <Star className="w-2.5 h-2.5 fill-current shrink-0" />
                         <span className="text-[10px] font-extrabold tabular-nums">{(p.points/1000).toFixed(1)}k</span>
@@ -737,39 +712,27 @@ function Index() {
                 })}
               </div>
 
-              {/* Divider */}
               <div className="h-px w-full mb-3" style={{background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent)"}} />
 
-              {/* Ranks 4–10 */}
               <ul className="space-y-1 flex-1">
                 {TOP_POPULARITY.slice(3).map((p, i) => (
                   <li key={p.id}>
                     <button className="group w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl hover:bg-white/6 transition-all duration-150 cursor-pointer">
-                      {/* Rank */}
                       <span className="w-5 shrink-0 text-[11px] font-bold text-white/30 text-center tabular-nums">#{i + 4}</span>
-
-                      {/* Avatar */}
                       <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${p.gradient} grid place-items-center font-bold text-white text-xs shrink-0 ring-1 ring-white/10 group-hover:ring-white/30 transition-all`}>
                         {p.initial}
                       </div>
-
-                      {/* Name */}
                       <span className="flex-1 text-xs font-semibold text-white/80 truncate group-hover:text-white transition-colors">{p.name}</span>
-
-                      {/* Points */}
                       <div className="flex items-center gap-1 shrink-0">
                         <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
                         <span className="text-[11px] font-bold text-amber-400 tabular-nums">{(p.points/1000).toFixed(1)}k</span>
                       </div>
-
-                      {/* Visit arrow */}
                       <ChevronRight className="w-3.5 h-3.5 text-white/20 group-hover:text-white/50 group-hover:translate-x-0.5 transition-all shrink-0" />
                     </button>
                   </li>
                 ))}
               </ul>
 
-              {/* Coming soon teaser */}
               <div className="mt-4 rounded-xl p-3 flex items-center gap-3" style={{background:"linear-gradient(120deg,rgba(168,85,247,0.15),rgba(251,191,36,0.08)))",border:"1px solid rgba(168,85,247,0.25)"}}>
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-amber-500 grid place-items-center shrink-0">
                   <Crown className="w-4 h-4 text-white" />
@@ -780,8 +743,6 @@ function Index() {
                 </div>
               </div>
             </div>
-
-            {/* Decorative bottom shimmer */}
             <div className="h-px w-full" style={{background:"linear-gradient(90deg,transparent,rgba(168,85,247,0.3),transparent)"}} />
           </aside>
         </section>
@@ -803,10 +764,8 @@ function Index() {
 
         {/* ── Refer & Earn stripe ── */}
         <section className="mt-4 sm:mt-5 rounded-2xl bg-surface border border-border overflow-hidden">
-          {/* Top accent line */}
           <div className="h-px w-full" style={{background:"linear-gradient(90deg,transparent,rgba(168,85,247,0.5),rgba(251,191,36,0.4),transparent)"}} />
           <div className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            {/* Label */}
             <div className="flex items-center gap-3 shrink-0">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 grid place-items-center shadow-glow shrink-0">
                 <Gift className="w-5 h-5 text-white" />
@@ -816,14 +775,12 @@ function Index() {
                 <div className="text-sm font-extrabold text-foreground leading-tight">Invite friends · Earn up to <span className="text-amber-400">₹10,000</span></div>
               </div>
             </div>
-            {/* Divider (desktop) */}
             <div className="hidden sm:block h-10 w-px bg-border" />
-            {/* Perks */}
             <div className="flex flex-wrap gap-x-6 gap-y-2 flex-1">
               {[
-                { icon: Users,          label: "Per referral",    value: "upto ₹100 bonus"  },
-                { icon: Zap,            label: "Instant credit",  value: "No delay"    },
-                { icon: Star,           label: "No cap",          value: "Unlimited"   },
+                { icon: Users, label: "Per referral",   value: "upto ₹100 bonus" },
+                { icon: Zap,   label: "Instant credit", value: "No delay"         },
+                { icon: Star,  label: "No cap",         value: "Unlimited"        },
               ].map(({ icon: I, label, value }) => (
                 <div key={label} className="flex items-center gap-2">
                   <I className="w-4 h-4 text-primary shrink-0" />
@@ -834,7 +791,6 @@ function Index() {
                 </div>
               ))}
             </div>
-            {/* CTA */}
             <button className="shrink-0 h-10 px-5 rounded-xl bg-gradient-primary text-primary-foreground font-bold text-sm shadow-glow transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-5px_hsl(var(--primary)/0.5)] whitespace-nowrap">
               Invite Now
             </button>
@@ -857,45 +813,29 @@ function Index() {
                 Premium casino experience with instant payouts, 24/7 support, and the biggest game library online.
               </p>
             </div>
-
             {([
-              { title: "Company", links: [
-                { label: "About Us",  href: "/about"    },
-                { label: "Careers",   href: "/careers"  },
-                { label: "Blog",      href: "/blog"     },
-              ]},
-              { title: "Legal", links: [
-                { label: "Terms & Conditions", href: "/terms"              },
-                { label: "Privacy Policy",     href: "/privacy"            },
-                { label: "Responsible Gaming", href: "/responsible-gaming" },
-              ]},
-              { title: "Support", links: [
-                { label: "Help Center", href: "/help"    },
-                { label: "Contact Us",  href: "/contact" },
-                { label: "FAQ",         href: "/faq"     },
-              ]},
+              { title: "Company", links: [{ label: "About Us", href: "/about" }, { label: "Careers", href: "/careers" }, { label: "Blog", href: "/blog" }] },
+              { title: "Legal",   links: [{ label: "Terms & Conditions", href: "/terms" }, { label: "Privacy Policy", href: "/privacy" }, { label: "Responsible Gaming", href: "/responsible-gaming" }] },
+              { title: "Support", links: [{ label: "Help Center", href: "/help" }, { label: "Contact Us", href: "/contact" }, { label: "FAQ", href: "/faq" }] },
             ] as const).map((col) => (
               <div key={col.title}>
                 <div className="text-xs font-bold tracking-[0.2em] text-foreground uppercase mb-3">{col.title}</div>
                 <ul className="space-y-2">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <a href={l.href} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
-                        {l.label}
-                      </a>
+                      <a href={l.href} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">{l.label}</a>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
           </div>
-
           <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <p className="text-[11px] text-muted-foreground">© 2026 FullPlay. All rights reserved. 18+ Play Responsibly.</p>
             <div className="flex items-center gap-4 text-[11px] text-muted-foreground">
-              <a href="/terms"   className="hover:text-primary transition-colors">Terms</a>
+              <a href="/terms" className="hover:text-primary transition-colors">Terms</a>
               <a href="/privacy" className="hover:text-primary transition-colors">Privacy</a>
-              <a href="#"        className="hover:text-primary transition-colors">Cookies</a>
+              <a href="#" className="hover:text-primary transition-colors">Cookies</a>
             </div>
           </div>
         </div>
@@ -912,9 +852,7 @@ function Index() {
           ].map(({ label, icon: I, active }) => (
             <button
               key={label}
-              onClick={() => {
-                if (label === "Account") setMenuOpen(true);
-              }}
+              onClick={() => { if (label === "Account") setMenuOpen(true); }}
               className={`flex-1 flex flex-col items-center justify-center gap-1 transition-colors ${
                 active ? "text-primary" : "text-muted-foreground hover:text-foreground"
               }`}
